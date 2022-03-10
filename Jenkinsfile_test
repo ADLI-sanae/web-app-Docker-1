@@ -1,17 +1,19 @@
 node{
     stage('checkout Scm'){
-    git credentialsId: 'gitcredentials', url: 'https://github.com/LahbiziSafae/web-app-Docker'    }
-    
-    stage('build docker image'){
-    sh 'docker build -t safaelah/my-app:2.0.0 .'
-    }
-    stage('push docker image'){
-    withCredentials([string(credentialsId: 'psswd', variable: 'dockerhubpsswd')]) {
-         sh "docker login -u safaelah -p ${dockerhubpsswd}"
-      }
-    sh 'docker push safaelah/my-app:2.0.0'
-    }
-    stage('Run Container on Dev Server'){
-    sh 'docker run -p 8001:5000 -d --name my-ap safaelah/my-app:2.0.0'
-   }
-}
+        git credentialsId: 'fbc3100f-164f-42a8-a58d-e1e585804de3', url: 'https://github.com/ADLI-sanae/web-app-Docker-1' } //integrate github with jenkins
+         stage('build docker image'){
+            sh 'docker build -t sanaead/mydemoapp .'
+            
+        } //build of docker image using a Dockerfile in root of the repo git
+        stage('push docker image')
+        { withCredentials([string(credentialsId: '82ada399-9e8f-4eb1-964e-d0f3160395e7', variable: 'dockerhubpsswd')]) {
+           
+        sh "docker login -u sanaead -p ${dockerhubpsswd}"
+           
+        } //login to the docker hub
+        sh 'docker push sanaead/mydemoapp' }
+        //push the image from VM to docker hub
+        stage('Run Container on Dev Server'){
+        sh 'docker run -p 8885:5000 -d --name my-app-python1 sanaead/mydemoapp ' }
+            //run container web app
+        }
